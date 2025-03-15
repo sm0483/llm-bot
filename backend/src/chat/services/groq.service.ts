@@ -8,7 +8,7 @@ export class GroqService {
   private client: Groq;
   private contextData: any = {};
   private config: GroqConfig;
-  private imdbContext: string = "";
+  private systemContext: string = "";
 
   constructor() {
     this.client = new Groq({
@@ -21,18 +21,18 @@ export class GroqService {
       maxTokens: parseInt(process.env.GROQ_MAX_TOKENS || "1024", 10),
     };
 
-    this.initializeIMDbContext();
-    logger.info("Groq service initialized with IMDb context");
+    this.initializeSystemContext();
+    logger.info("Groq service initialized with System context");
   }
 
-  private async initializeIMDbContext(): Promise<void> {
+  private async initializeSystemContext(): Promise<void> {
     try {
       const contextDoc = await ContextDataModel.findOne().lean();
-      this.imdbContext = contextDoc?.text || "";
-      logger.debug("Loaded IMDb context data");
+      this.systemContext = contextDoc?.text || "";
+      logger.debug("Loaded System context data");
     } catch (error) {
-      logger.error("Error loading IMDb context:", error);
-      this.imdbContext = "";
+      logger.error("Error loading System context:", error);
+      this.systemContext = "";
     }
   }
 
@@ -76,14 +76,14 @@ export class GroqService {
 
   private createSystemMessage(): string {
     const combinedContext = {
-      imdbData: this.imdbContext,
+      systemContextData: this.systemContext,
       ...this.contextData,
     };
 
     return `you are a chatbot that will respond based on the system context and the user query and the previous user query.
     use these details to provide more abt response to the user query.
 
-    System context : ${JSON.stringify(combinedContext.imdbData, null, 2)}
+    System context : ${JSON.stringify(combinedContext.systemContextData, null, 2)}
     Current user query: ${JSON.stringify(combinedContext, null, 2)}
     Previous user query: not given now 
 
