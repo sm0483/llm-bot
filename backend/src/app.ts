@@ -1,18 +1,18 @@
 import express from "express";
 import { IRoute } from "./shared/types/IRoute";
 import dotenv from "dotenv";
-import connectDb from "./config/db.config";
 dotenv.config();
 import cors from "cors";
 import "express-async-errors";
 import { ErrorRequestHandler } from "express";
 import rateLimit from "express-rate-limit";
 import morgan from "morgan";
+import { getDbInstance } from "./config/db.config";
 
 import { morganStream } from "./shared/logger";
 import errorHandler from "./shared/middleware/error-handler";
 import pageNotFound from "./shared/error/not-found";
-import { setupSocketServer } from "./socket";
+import { setupSocketServer } from "./socket/socket";
 import { KEYS } from "./config/keys";
 
 class App {
@@ -48,7 +48,7 @@ class App {
         origin: [KEYS.APP_URL as string],
         credentials: true,
         methods: ["GET", "POST", "DELETE", "PUT", "PATCH", "UPDATE"],
-      }),
+      })
     );
   };
 
@@ -57,14 +57,13 @@ class App {
       this.app.use(this.start, route.router);
     });
   };
+  private initDb = async () => {
+    await getDbInstance();
+  };
 
   private initErrorHandler = () => {
     this.app.use(pageNotFound);
     this.app.use(errorHandler as unknown as ErrorRequestHandler);
-  };
-
-  private initDb = async () => {
-    await connectDb(KEYS.MONGO_URI as string);
   };
 
   public listen = () => {

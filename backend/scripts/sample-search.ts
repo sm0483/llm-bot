@@ -30,7 +30,6 @@ async function searchSimilarMovies(
       throw new Error("Limit must be between 1-100");
 
     const queryEmbedding = await generateEmbedding(query);
-
     return await collection
       .aggregate<SearchResult>([
         {
@@ -42,14 +41,14 @@ async function searchSimilarMovies(
             numCandidates: 100,
           },
         },
-        { $sort: { Relevance: -1 } },
-        { $limit: limit },
         {
           $project: {
             _id: 0,
             embeddings: 0,
           },
         },
+        { $sort: { Relevance: -1 } },
+        { $limit: limit },
       ])
       .toArray();
   } catch (error) {
@@ -73,11 +72,7 @@ export async function exampleUsage(collectionName: string) {
     const db = getDb(process.env.DB_NAME!);
     const moviesCollection = db.collection<MovieDocument>(COLLECTION_NAME);
 
-    const results = await searchSimilarMovies(
-      "prison drama",
-      5,
-      moviesCollection
-    );
+    const results = await searchSimilarMovies("Hey fin", 5, moviesCollection);
     console.log("Search results:", results);
   } finally {
     await closeDB();

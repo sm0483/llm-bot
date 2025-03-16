@@ -1,5 +1,5 @@
 import { Application } from "express";
-import { initSocketService } from "./chat/services/socket.service";
+import { initSocketService } from "./socket.service";
 
 export const setupSocketServer = (app: Application) => {
   const server = initSocketService(app);
