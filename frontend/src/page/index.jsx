@@ -1,11 +1,20 @@
-import ChatToggleButton from "./components/ChatToggleButton";
-import ChatInterface from "./components/ChatInterface";
+import React, { Suspense } from "react";
+import Loader from "../components/Loader";
+
+const ChatInterface = React.lazy(() => import("./components/ChatInterface"));
+const ChatToggleButton = React.lazy(() =>
+  import("./components/ChatToggleButton")
+);
 
 function Page() {
   return (
     <div className="relative h-screen w-full bg-gray-light">
-      <ChatToggleButton />
-      <ChatInterface />
+      <Suspense fallback={<Loader />}>
+        <ChatToggleButton />
+      </Suspense>
+      <Suspense fallback={<Loader />}>
+        <ChatInterface />
+      </Suspense>
     </div>
   );
 }

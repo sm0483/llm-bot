@@ -1,4 +1,3 @@
-import React from "react";
 import Avatar from "./Avatar";
 import MessageContent from "./MessageContent";
 import IconButton from "./IconButton";

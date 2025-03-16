@@ -1,6 +1,6 @@
 import { IMAGES } from "../../images";
 
-const ChatMessage = ({ chat, formatTime }) => {
+function ChatMessage({ chat, formatTime }) {
   const isBot = chat.sender === "bot";
   return (
     <div className={`flex ${isBot ? "justify-start" : "justify-end"}`}>
@@ -32,6 +32,6 @@ const ChatMessage = ({ chat, formatTime }) => {
       </div>
     </div>
   );
-};
+}
 
 export default ChatMessage;

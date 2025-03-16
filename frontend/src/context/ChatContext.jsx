@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from "react";
+import  { createContext, useState, useEffect } from "react";
 import chatService from "../services/chatService";
 
 export const ChatContext = createContext();

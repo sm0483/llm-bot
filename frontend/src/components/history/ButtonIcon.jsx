@@ -1,5 +1,3 @@
-import React from "react";
-
 function ButtonIcon({ src, alt, className = "" }) {
   return (
     <img
