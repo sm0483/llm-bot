@@ -61,12 +61,16 @@ export class ContextRepository {
               _id: 0,
               embeddings: 0,
               score: { $meta: "vectorSearchScore" },
+              Poster: 0,
+              Production: 0,
+              Website: 0,
+              Response: 0,
             },
           },
           { $sort: { Relevance: -1, score: -1 } },
           {
             $match: {
-              score: { $gt: 0.7 },
+              score: { $gt: 0.75 },
             },
           },
           { $limit: limit },

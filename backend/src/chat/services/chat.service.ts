@@ -59,6 +59,9 @@ export class ChatService {
   
       data: ${contextDataString}
 
+      try to answer based on the data provided if no data don't contain that information just answer it from your knowledge
+      don't tell the use system is not provided any inforamtion
+
     `.trim();
   }
 }
