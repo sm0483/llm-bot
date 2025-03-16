@@ -3,7 +3,7 @@ import ChatHeader from "./ChatHeader";
 import ChatMessage from "./ChatMessage";
 import TypingIndicator from "./TypingIndicator";
 import MessageInput from "./MessageInput";
-import useChatLogic from "../../hooks/useChatLogic";
+import { useChat } from "../../hooks/useChat";
 import ChatContainer from "./ChatContainer";
 
 function ChatComponent({ onClose }) {
@@ -14,7 +14,7 @@ function ChatComponent({ onClose }) {
     isTyping,
     handleSendMessage,
     formatTime,
-  } = useChatLogic();
+  } = useChat();
 
   const chatContainerRef = useRef(null);
 

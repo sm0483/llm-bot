@@ -1,11 +1,14 @@
 import HistoryComponent from "../../components/history";
 import ChatComponent from "../../components/chat";
-import { useChatStore, CHAT_STATES } from "../../hooks/useChatStore";
+import {
+  useChatStatusStore,
+  CHAT_STATES,
+} from "../../hooks/useChatStatusStore";
 
 function ChatInterface() {
-  const status = useChatStore((state) => state.status);
-  const openChat = useChatStore((state) => state.openChat);
-  const openHistory = useChatStore((state) => state.openHistory);
+  const status = useChatStatusStore((state) => state.status);
+  const openChat = useChatStatusStore((state) => state.openChat);
+  const openHistory = useChatStatusStore((state) => state.openHistory);
 
   if (status === CHAT_STATES.CLOSED) {
     return null;

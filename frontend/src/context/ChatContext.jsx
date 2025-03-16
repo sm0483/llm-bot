@@ -1,17 +1,33 @@
-import { useState, useEffect } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import chatService from "../services/chatService";
 
-const useChatLogic = () => {
+export const ChatContext = createContext();
+
+const initialMessage = {
+  message: "Hi there! I am fin.",
+  sender: "bot",
+  timestamp: new Date(Date.now()).toISOString(),
+  avatar: "Fin",
+};
+
+export const ChatProvider = ({ children }) => {
   const [message, setMessage] = useState("");
-  const [chatHistory, setChatHistory] = useState([
-    {
-      message: "Hi there! I am fin.",
-      sender: "bot",
-      timestamp: new Date(Date.now()).toISOString(),
-      avatar: "Fin",
-    },
-  ]);
+  const [chatHistory, setChatHistory] = useState([initialMessage]);
   const [isTyping, setIsTyping] = useState(false);
+  const updateChatHistory = (id) => {
+    setChatHistory([
+      {
+        message: `history //TODO chat id : ${id}`,
+        sender: "bot",
+        timestamp: new Date(Date.now()).toISOString(),
+        avatar: "Fin",
+      },
+    ]);
+  };
+
+  const cleanupChat = () => {
+    setChatHistory([initialMessage]);
+  };
 
   useEffect(() => {
     chatService.connect();
@@ -69,14 +85,17 @@ const useChatLogic = () => {
     });
   };
 
-  return {
+  const value = {
     message,
     setMessage,
     chatHistory,
     isTyping,
     handleSendMessage,
     formatTime,
+    updateChatHistory,
+    cleanupChat,
   };
+
+  return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
 };
 
-export default useChatLogic;

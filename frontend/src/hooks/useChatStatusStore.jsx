@@ -6,7 +6,7 @@ export const CHAT_STATES = {
   CONVERSATION: 'CONVERSATION'
 };
 
-export const useChatStore = create((set) => ({
+export const useChatStatusStore = create((set) => ({
   status: CHAT_STATES.CLOSED,
   isChatOpen: false,
 

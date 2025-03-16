@@ -4,11 +4,13 @@ import MessageContent from "./MessageContent";
 import IconButton from "./IconButton";
 import { IMAGES } from "../../images";
 
-function MessageItem({ message, onClick }) {
+function MessageItem({ message, onClick, updateChatHistory }) {
   return (
     <div
       className="p-4 border-b hover:bg-gray-50 cursor-pointer"
-      onClick={onClick}
+      onClick={() => {
+        onClick(), updateChatHistory(message.id);
+      }}
     >
       <div className="flex items-center">
         <Avatar src={IMAGES.logo} />
