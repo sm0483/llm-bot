@@ -1,12 +1,12 @@
 import io from 'socket.io-client';
-
+const appURL = import.meta.env.VITE_BACK_URL
 class ChatService {
   constructor() {
     this.socket = null;
     this.listeners = new Map();
   }
 
-  connect(url = 'http://localhost:5000') {
+  connect(url = appURL) {
     if (this.socket) return;
     
     this.socket = io.connect(url);
