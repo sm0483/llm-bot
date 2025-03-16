@@ -9,6 +9,8 @@ const KEYS = {
   NODE_ENV: process.env.NODE_ENV || "development",
   DB_NAME: process.env.DB_NAME || "your_db",
   GOOGLE_API_KEY: process.env.GOOGLE_API_KEY,
+  RATE_LIMIT_WINDOW_MS: process.env.RATE_LIMIT_WINDOW_MS || "900000",
+  RATE_LIMIT_MAX:process.env.RATE_LIMIT_MAX || "100"
 };
 
 export { KEYS };

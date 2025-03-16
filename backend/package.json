@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node ./dist/index.js",
     "lint": "eslint src/**/*.ts",
+    "build": "tsc ",
     "format": "prettier --write \"src/**/*.ts\"",
     "dev": "TZ='UTC' nodemon src/index.ts",
     "seed-context": "nodemon scripts/seed-db.ts",

@@ -9,7 +9,7 @@ import rateLimit from "express-rate-limit";
 import morgan from "morgan";
 import { getDbInstance } from "./config/db.config";
 
-import { morganStream } from "./shared/logger";
+import { logger, morganStream } from "./shared/logger";
 import errorHandler from "./shared/middleware/error-handler";
 import pageNotFound from "./shared/error/not-found";
 import { setupSocketServer } from "./socket/socket";
@@ -34,8 +34,8 @@ class App {
 
   private initMiddleware = () => {
     const limiter = rateLimit({
-      windowMs: 15 * 60 * 1000,
-      max: 100,
+      windowMs: parseInt(KEYS.RATE_LIMIT_WINDOW_MS),
+      max: parseInt(KEYS.RATE_LIMIT_MAX),
       message:
         "Too many requests from this IP, please try again after 15 minutes",
     });
@@ -68,7 +68,7 @@ class App {
 
   public listen = () => {
     this.server.listen(this.port, () => {
-      console.log(`connected to port ${this.port}`);
+      logger.info(`connected to port ${this.port}`);
     });
   };
 
