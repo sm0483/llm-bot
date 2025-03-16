@@ -1,6 +1,7 @@
 import { Document } from "mongodb";
 import { logger } from "../../shared/logger";
 import { getDbInstance } from "../../config/db.config";
+import { ServerError } from "../../shared/error/custom-error";
 
 interface ContextSearchResult extends Document {
   content: string;
@@ -14,7 +15,6 @@ export class ContextRepository {
 
   constructor() {
     this.initialize();
-    logger.info("Context Repository initialized");
   }
 
   private async initialize() {
@@ -70,7 +70,7 @@ export class ContextRepository {
           { $sort: { Relevance: -1, score: -1 } },
           {
             $match: {
-              score: { $gt: 0.75 },
+              score: { $gt: 0.7 },
             },
           },
           { $limit: limit },
@@ -80,7 +80,7 @@ export class ContextRepository {
       return results as ContextSearchResult[];
     } catch (error) {
       logger.error(`Context search failed: ${error}`);
-      throw error;
+      throw new ServerError();
     }
   }
 }

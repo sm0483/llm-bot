@@ -4,6 +4,7 @@ import { GroqUtil } from "../utils/groq.util";
 import { ContextRepository } from "../repository/context.repository";
 import { EmbeddingUtil } from "../utils/embedding.util";
 import { KEYS } from "../../config/keys";
+import { ServerError } from "../../shared/error/custom-error";
 
 export class ChatService {
   private groqUtil: GroqUtil;
@@ -26,7 +27,7 @@ export class ChatService {
         "movies",
         "vector_index",
         "embeddings",
-        5
+        10
       );
       logger.info(retrievedContextData);
 
@@ -45,7 +46,7 @@ export class ChatService {
       };
     } catch (error) {
       logger.error(`Chat service error: ${error}`);
-      throw error;
+      throw new ServerError();
     }
   }
 

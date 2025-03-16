@@ -10,8 +10,3 @@ export interface MessageRequest {
   message: string;
   context?: any;
 }
-
-export interface ContextUpdateResponse {
-  success: boolean;
-  error?: string;
-}
