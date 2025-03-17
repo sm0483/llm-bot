@@ -2,7 +2,7 @@ import { Socket } from "socket.io";
 import { ChatService } from "../services/chat.service";
 import { logger } from "../../shared/logger";
 import { handleError } from "../utils/error.util";
-import { MessageRequest, ChatMessage } from "../types/socket.types";
+import { MessageRequest } from "../types/socket.types";
 import { BotResponse } from "../types/bot.types";
 
 export class ChatController {

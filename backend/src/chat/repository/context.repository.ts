@@ -67,7 +67,7 @@ export class ContextRepository {
               Response: 0,
             },
           },
-          { $sort: { Relevance: -1, score: -1 } },
+          { $sort: { score: -1 } },
           {
             $match: {
               score: { $gt: 0.7 },

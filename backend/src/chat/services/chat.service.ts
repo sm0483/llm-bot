@@ -51,18 +51,21 @@ export class ChatService {
   }
 
   private createSystemMessage(retrievedContextData: any): string {
-    const contextDataString = retrievedContextData
-      ? `Retrieved Context Data:\n${JSON.stringify(retrievedContextData, null, 2)}`
-      : "No retrieved context data available.";
+    let contextInfo = "";
+
+    if (retrievedContextData && retrievedContextData.length > 0) {
+      const contextSnippets = retrievedContextData
+        .map((item: any) => item.text)
+        .join("\n\n");
+      contextInfo = `\n\nRelevant Information:\n${contextSnippets}\n\n`;
+    }
 
     return `
-      You are an AI assistant named fin designed to respond the user's query.
-  
-      data: ${contextDataString}
-
-      try to answer based on the data provided if no data don't contain that information just answer it from your knowledge
-      don't tell the use system is not provided any inforamtion
-
+      You are an AI assistant named fin designed to answer user queries. 
+      Use the following information to answer the user's question, if relevant:
+      ${contextInfo}
+      If the information needed is not present, answer from your general knowledge.
+      Avoid mentioning the presence of retrieved data directly.
     `.trim();
   }
 }
