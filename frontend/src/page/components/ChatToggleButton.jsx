@@ -1,9 +1,9 @@
 import { IMAGES } from "../../images";
-import { useChatStatusStore, CHAT_STATES } from "../../hooks/useChatStatusStore";
+import { useChatViewStore, CHAT_STATES } from "../../store/useChatViewStore";
 
 function ChatToggleButton() {
-  const status = useChatStatusStore((state) => state.status);
-  const toggleChat = useChatStatusStore((state) => state.toggleChat);
+  const status = useChatViewStore((state) => state.status);
+  const toggleChat = useChatViewStore((state) => state.toggleChat);
   const isOpen = status !== CHAT_STATES.CLOSED;
 
   return (

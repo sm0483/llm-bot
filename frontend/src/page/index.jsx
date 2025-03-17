@@ -8,7 +8,7 @@ const ChatToggleButton = React.lazy(() =>
 
 function Page() {
   return (
-    <div className="relative h-screen w-full bg-gray-light">
+    <div className="relative w-full bg-gray-light">
       <Suspense fallback={<Loader />}>
         <ChatToggleButton />
       </Suspense>

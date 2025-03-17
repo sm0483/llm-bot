@@ -3,11 +3,13 @@ import HistoryHeader from "./HistoryHeader";
 import MessageList from "./MessageList";
 import HistoryFooter from "./HistoryFooter";
 import AskQuestionButton from "./AskQuestionButton";
-import { useMessageHistory } from "../../hooks/useMessageHistory";
-import { useChat } from "../../hooks/useChat";
-function History({ onAskQuestion }) {
-  const messageHistory = useMessageHistory();
-  const { updateChatHistory, cleanupChat } = useChat();
+
+function History({
+  onAskQuestion,
+  updateChatHistory,
+  cleanupChat,
+  messageHistory,
+}) {
 
   return (
     <HistoryContainer>
@@ -21,6 +23,7 @@ function History({ onAskQuestion }) {
         <AskQuestionButton
           onAskQuestion={onAskQuestion}
           cleanupChat={cleanupChat}
+          title={"Ask a question"}
         />
       </HistoryFooter>
     </HistoryContainer>

@@ -1,16 +1,20 @@
-import { useChat } from "../../hooks/useChat";
 import ChatHeader from "./ChatHeader";
 import MessageInput from "./MessageInput";
 import ChatContainer from "./ChatContainer";
 import ChatMessageHistory from "./ChatMessageHistory";
 import { formatTime } from "../../utils/dateUtils";
+import ChatServiceConnector from "./ChatServiceConnector";
 
-function ChatComponent({ onClose }) {
-  const { message, setMessage, chatHistory, isTyping, handleSendMessage } =
-    useChat();
-
+function ChatComponent({
+  onClose,
+  chatHistory,
+  isTyping,
+  handleSendMessage,
+  addBotMessage,
+}) {
   return (
     <ChatContainer>
+      <ChatServiceConnector addBotMessage={addBotMessage} />
       <ChatHeader onClose={onClose} />
       <ChatMessageHistory
         chatHistory={chatHistory}
@@ -18,9 +22,8 @@ function ChatComponent({ onClose }) {
         isTyping={isTyping}
       />
       <MessageInput
-        message={message}
-        setMessage={setMessage}
         handleSendMessage={handleSendMessage}
+        placeholder={"Ask question..."}
       />
     </ChatContainer>
   );

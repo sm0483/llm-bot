@@ -1,17 +1,27 @@
 import { IMAGES } from "../../images";
+import { useState } from "react";
 
-function MessageInput({ handleSendMessage, message, setMessage }) {
+function MessageInput({ handleSendMessage, placeholder }) {
+  const [inputMessage, setInputMessage] = useState("");
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    if (inputMessage.trim()) {
+      handleSendMessage(inputMessage);
+      setInputMessage("");
+    }
+  };
   return (
     <form
-      onSubmit={handleSendMessage}
+      onSubmit={onSubmit}
       className="p-4 border-t border-gray-200 bg-white md:rounded-2xl"
     >
       <div className="flex items-center space-x-2 relative">
         <input
           type="text"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder="Ask a question..."
+          placeholder={placeholder}
+          value={inputMessage}
+          onChange={(e) => setInputMessage(e.target.value)}
           className="flex-1 p-3 pl-4 pr-12 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-black"
         />
         <div className="absolute right-3 flex space-x-2">
