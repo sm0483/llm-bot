@@ -1,4 +1,4 @@
-import  { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect } from "react";
 import chatService from "../services/chatService";
 
 export const ChatContext = createContext();
@@ -14,6 +14,7 @@ export const ChatProvider = ({ children }) => {
   const [message, setMessage] = useState("");
   const [chatHistory, setChatHistory] = useState([initialMessage]);
   const [isTyping, setIsTyping] = useState(false);
+
   const updateChatHistory = (id) => {
     setChatHistory([
       {
@@ -78,24 +79,15 @@ export const ChatProvider = ({ children }) => {
     }, 1500);
   };
 
-  const formatTime = (timestamp) => {
-    return new Date(timestamp).toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
-
   const value = {
     message,
     setMessage,
     chatHistory,
     isTyping,
     handleSendMessage,
-    formatTime,
     updateChatHistory,
     cleanupChat,
   };
 
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
 };
-

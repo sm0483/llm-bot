@@ -1,44 +1,22 @@
-import { useRef, useEffect } from "react";
-import ChatHeader from "./ChatHeader";
-import ChatMessage from "./ChatMessage";
-import TypingIndicator from "./TypingIndicator";
-import MessageInput from "./MessageInput";
 import { useChat } from "../../hooks/useChat";
+import ChatHeader from "./ChatHeader";
+import MessageInput from "./MessageInput";
 import ChatContainer from "./ChatContainer";
+import ChatMessageHistory from "./ChatMessageHistory";
+import { formatTime } from "../../utils/dateUtils";
 
 function ChatComponent({ onClose }) {
-  const {
-    message,
-    setMessage,
-    chatHistory,
-    isTyping,
-    handleSendMessage,
-    formatTime,
-  } = useChat();
-
-  const chatContainerRef = useRef(null);
-
-  useEffect(() => {
-    if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop =
-        chatContainerRef.current.scrollHeight;
-    }
-  }, [chatHistory]);
+  const { message, setMessage, chatHistory, isTyping, handleSendMessage } =
+    useChat();
 
   return (
     <ChatContainer>
       <ChatHeader onClose={onClose} />
-      <div
-        ref={chatContainerRef}
-        className="flex-1 overflow-y-auto p-4 space-y-4 bg-white"
-      >
-        {chatHistory.map((chat, index) => (
-          <ChatMessage key={index} chat={chat} formatTime={formatTime} />
-        ))}
-
-        {isTyping && <TypingIndicator />}
-      </div>
-
+      <ChatMessageHistory
+        chatHistory={chatHistory}
+        formatTime={formatTime}
+        isTyping={isTyping}
+      />
       <MessageInput
         message={message}
         setMessage={setMessage}

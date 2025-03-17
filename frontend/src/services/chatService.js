@@ -1,54 +1,49 @@
-import io from 'socket.io-client';
-const appURL = import.meta.env.VITE_BACK_URL
+import io from "socket.io-client";
+
 class ChatService {
-  constructor() {
+  constructor(appURL = import.meta.env.VITE_BACK_URL) {
     this.socket = null;
-    this.listeners = new Map();
+    this.appURL = appURL;
   }
 
-  connect(url = appURL) {
+  connect() {
     if (this.socket) return;
-    
-    this.socket = io.connect(url);
-    console.log('Socket connected');
-    
-    this.listeners.forEach((callback, event) => {
-      this.socket.on(event, callback);
-    });
+
+    this.socket = io.connect(this.appURL);
+    console.log("Socket connected");
   }
 
   disconnect() {
     if (!this.socket) return;
-    
+
     this.socket.disconnect();
     this.socket = null;
-    console.log('Socket disconnected');
+    console.log("Socket disconnected");
   }
 
   sendMessage(messageData) {
     if (!this.socket) {
-      console.error('Socket not connected');
+      console.error("Socket not connected");
       return false;
     }
-    
-    this.socket.emit('send_message', messageData);
+
+    this.socket.emit("send_message", messageData);
     return true;
   }
 
   on(event, callback) {
-    this.listeners.set(event, callback);
-    
-    if (this.socket) {
-      this.socket.on(event, callback);
+    if (!this.socket) {
+      console.error("Socket not connected, can't add listener");
+      return;
     }
+
+    this.socket.on(event, callback);
   }
 
   off(event) {
-    if (this.socket) {
-      this.socket.off(event);
-    }
-    
-    this.listeners.delete(event);
+    if (!this.socket) return;
+
+    this.socket.off(event);
   }
 
   isConnected() {
@@ -57,5 +52,4 @@ class ChatService {
 }
 
 const chatService = new ChatService();
-
 export default chatService;

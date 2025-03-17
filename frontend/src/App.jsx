@@ -5,11 +5,11 @@ import { ChatProvider } from "./context/ChatContext";
 
 function App() {
   return (
-    <ChatProvider>
-      <ErrorBoundary>
+    <ErrorBoundary>
+      <ChatProvider>
         <Page />;
-      </ErrorBoundary>
-    </ChatProvider>
+      </ChatProvider>
+    </ErrorBoundary>
   );
 }
 
