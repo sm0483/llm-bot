@@ -1,5 +1,6 @@
 import express from "express";
 import { IRoute } from "./shared/types/IRoute";
+import { IChannel } from "./shared/types/IChannel";
 import dotenv from "dotenv";
 dotenv.config();
 import cors from "cors";
@@ -12,24 +13,27 @@ import { getDbInstance } from "./config/db.config";
 import { logger, morganStream } from "./shared/logger";
 import errorHandler from "./shared/middleware/error-handler";
 import pageNotFound from "./shared/error/not-found";
-import { setupSocketServer } from "./socket/socket";
 import { KEYS } from "./config/keys";
+import { socketConfig } from "./config/socket.config";
+import { createServer, Server as HttpServer } from "http";
+import { Server } from "socket.io";
 
 class App {
   public app: express.Application;
   public start: string;
   public port: string;
-  public server: ReturnType<typeof setupSocketServer>;
+  public server: HttpServer;
 
-  constructor(routes: IRoute[]) {
+  constructor(routes: IRoute[], channels: IChannel[]) {
     this.start = "/api/v1";
     this.app = express();
+    this.port = KEYS.PORT;
+
     this.initDb();
     this.initMiddleware();
     this.initRoutes(routes);
-    this.port = KEYS.PORT;
     this.initErrorHandler();
-    this.server = setupSocketServer(this.app);
+    this.server = this.setupSocketServer(channels);
   }
 
   private initMiddleware = () => {
@@ -70,6 +74,28 @@ class App {
     this.server.listen(this.port, () => {
       logger.info(`connected to port ${this.port}`);
     });
+  };
+
+  private setupSocketServer = (channels: IChannel[]) => {
+    const server = createServer(this.app);
+    const io = new Server(server, socketConfig);
+
+    channels.forEach(({ path, controller }) => {
+      const namespace = io.of(path);
+      const controllerInstance = new controller();
+
+      namespace.on("connection", (socket) => {
+        logger.info(`New client connected to ${path}: ${socket.id}`);
+        controllerInstance.registerHandlers(socket);
+
+        socket.on("disconnect", () => {
+          logger.info(`Client disconnected from ${path}: ${socket.id}`);
+        });
+      });
+    });
+
+    logger.info(`Socket.IO initialized with ${channels.length} channels`);
+    return server;
   };
 
   public getApp = () => {

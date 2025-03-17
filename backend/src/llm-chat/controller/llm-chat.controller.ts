@@ -1,15 +1,15 @@
 import { Socket } from "socket.io";
-import { ChatService } from "../services/chat.service";
+import { LlmChatService } from "../services/llm-chat.service";
 import { logger } from "../../shared/logger";
 import { handleError } from "../utils/error.util";
 import { MessageRequest } from "../types/socket.types";
 import { BotResponse } from "../types/bot.types";
 
-export class ChatController {
-  private chatService: ChatService;
+export class LLmChatController {
+  private llmChatService: LlmChatService;
 
   constructor() {
-    this.chatService = new ChatService();
+    this.llmChatService = new LlmChatService();
   }
 
   public registerHandlers(socket: Socket): void {
@@ -19,7 +19,7 @@ export class ChatController {
   private registerMessageHandlers(socket: Socket): void {
     socket.on("send_message", async (data: MessageRequest) => {
       try {
-        const response = await this.chatService.processMessage(data.message);
+        const response = await this.llmChatService.processMessage(data.message);
 
         const botResponse = new BotResponse(
           response.message,

@@ -9,7 +9,7 @@ class ChatService {
   connect() {
     if (this.socket) return;
 
-    this.socket = io.connect(this.appURL);
+    this.socket = io.connect(`${this.appURL}/llm`);
     console.log("Socket connected");
   }
 

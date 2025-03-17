@@ -6,7 +6,7 @@ import { EmbeddingUtil } from "../utils/embedding.util";
 import { KEYS } from "../../config/keys";
 import { ServerError } from "../../shared/error/custom-error";
 
-export class ChatService {
+export class LlmChatService {
   private groqUtil: GroqUtil;
   private contextRepository: ContextRepository;
   private embeddingUtil: EmbeddingUtil;
