@@ -8,7 +8,7 @@ import "express-async-errors";
 import { ErrorRequestHandler } from "express";
 import rateLimit from "express-rate-limit";
 import morgan from "morgan";
-import { getDbInstance } from "./config/db.config";
+import database from "./config/db.config";
 
 import { logger, morganStream } from "./shared/logger";
 import errorHandler from "./shared/middleware/error-handler";
@@ -62,7 +62,7 @@ class App {
     });
   };
   private initDb = async () => {
-    await getDbInstance();
+    await database.connect();
   };
 
   private initErrorHandler = () => {

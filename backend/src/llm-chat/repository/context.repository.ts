@@ -1,6 +1,6 @@
 import { Document } from "mongodb";
 import { logger } from "../../shared/logger";
-import { getDbInstance } from "../../config/db.config";
+import database from "../../config/db.config";
 import { ServerError } from "../../shared/error/custom-error";
 
 interface ContextSearchResult extends Document {
@@ -14,11 +14,7 @@ export class ContextRepository {
   private db;
 
   constructor() {
-    this.initialize();
-  }
-
-  private async initialize() {
-    this.db = await getDbInstance();
+    this.db = database.getDb();
   }
 
   public async getContext(
